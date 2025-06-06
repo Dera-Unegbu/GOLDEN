@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import emailjs from 'emailjs-com';
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -16,23 +15,23 @@ export default function BookingForm() {
     setSubmitStatus('idle');
 
     try {
-      await emailjs.send(
-        'default_service',
-        'template_default',
-        {
-          to_email: 'drg4gold@gmail.com',
-          from_name: formData.name,
-          from_email: formData.email || 'No email provided',
-          phone: formData.phone,
-          message: `New appointment request from ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email || 'Not provided'}`
-        },
-        '7V_iK6tcVF6JStxm0'
-      );
+      const formElement = e.target as HTMLFormElement;
+      const formDataToSend = new FormData(formElement);
+      
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formDataToSend as any).toString()
+      });
 
-      setSubmitStatus('success');
-      setFormData({ name: '', phone: '', email: '' });
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', phone: '', email: '' });
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
-      console.error('Failed to send email:', error);
+      console.error('Failed to submit form:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -49,7 +48,7 @@ export default function BookingForm() {
             {submitStatus === 'success' ? (
               <div className="text-center py-8">
                 <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                  <strong>Thank you!</strong> Your appointment request has been sent successfully.
+                  <strong>Thank you!</strong> Your appointment request has been sent successfully. We will contact you soon.
                 </div>
                 <button
                   onClick={() => setSubmitStatus('idle')}
@@ -59,7 +58,15 @@ export default function BookingForm() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+                name="appointment-booking" 
+                method="POST" 
+                data-netlify="true"
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="appointment-booking" />
+                
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name *
@@ -67,6 +74,7 @@ export default function BookingForm() {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     value={formData.name}
@@ -82,6 +90,7 @@ export default function BookingForm() {
                   <input
                     type="tel"
                     id="phone"
+                    name="phone"
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     value={formData.phone}
@@ -97,6 +106,7 @@ export default function BookingForm() {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -116,7 +126,7 @@ export default function BookingForm() {
 
                 {submitStatus === 'error' && (
                   <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center">
-                    Failed to send request. Please try again or contact us directly.
+                    Failed to send request. Please try again or contact us directly at +2348084915273.
                   </div>
                 )}
               </form>
