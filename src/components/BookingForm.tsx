@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 
 export default function BookingForm() {
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success'>('idle');
+  const [state, handleSubmit] = useForm("xanjbdva");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Netlify will handle the form submission automatically
-    // Show success message after a brief delay to simulate processing
-    setTimeout(() => {
-      setSubmitStatus('success');
-    }, 1000);
-  };
-
-  if (submitStatus === 'success') {
+  if (state.succeeded) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-2xl mx-auto">
@@ -21,7 +13,7 @@ export default function BookingForm() {
               <h2 className="text-2xl font-bold text-green-800 mb-4">Thank You!</h2>
               <p className="text-lg text-green-700">Your appointment request has been submitted successfully. We'll get back to you soon!</p>
               <button 
-                onClick={() => setSubmitStatus('idle')}
+                onClick={() => window.location.reload()}
                 className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 Submit Another Request
@@ -40,17 +32,10 @@ export default function BookingForm() {
       <div className="max-w-2xl mx-auto">
         <div className="bg-gradient-to-br from-blue-50 to-gray-100 rounded-lg shadow-lg overflow-hidden">
           <div className="p-8">
-            <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit}>
-              <input type="hidden" name="form-name" value="contact" />
-              <input 
-                type="hidden" 
-                name="subject" 
-                value="New lead from %{formName} (%{submissionId})" 
-              />
-              
+            <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name *
+                  Full Name *
                 </label>
                 <input
                   id="name"
@@ -60,11 +45,17 @@ export default function BookingForm() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   placeholder="Enter your full name"
                 />
+                <ValidationError 
+                  prefix="Name" 
+                  field="name"
+                  errors={state.errors}
+                  className="text-red-600 text-sm mt-1"
+                />
               </div>
               
               <div className="mb-6">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Email *
+                  Email Address *
                 </label>
                 <input
                   id="email"
@@ -74,11 +65,37 @@ export default function BookingForm() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   placeholder="Enter your email address"
                 />
+                <ValidationError 
+                  prefix="Email" 
+                  field="email"
+                  errors={state.errors}
+                  className="text-red-600 text-sm mt-1"
+                />
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="Enter your phone number"
+                />
+                <ValidationError 
+                  prefix="Phone" 
+                  field="phone"
+                  errors={state.errors}
+                  className="text-red-600 text-sm mt-1"
+                />
               </div>
 
               <div className="mb-6">
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
+                  Message (Optional)
                 </label>
                 <textarea
                   id="message"
@@ -87,13 +104,20 @@ export default function BookingForm() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   placeholder="Tell us about your appointment needs or any specific concerns..."
                 />
+                <ValidationError 
+                  prefix="Message" 
+                  field="message"
+                  errors={state.errors}
+                  className="text-red-600 text-sm mt-1"
+                />
               </div>
               
               <button 
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                type="submit" 
+                disabled={state.submitting}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
               >
-                Send Appointment Request
+                {state.submitting ? 'Submitting...' : 'Send Appointment Request'}
               </button>
             </form>
           </div>
