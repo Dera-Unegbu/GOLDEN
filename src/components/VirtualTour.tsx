@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import officeImg from 'https://github.com/Dera-Unegbu/GOLDEN/tree/blob/src/assets/docoffice.png';
-import entranceImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/reception101.png';
-import recepImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/recep.jpg';
-import gymImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/gym.jpg';
-import scanImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/scanarea.jpg';
-import malewardImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/maleward.jpeg';
-import femalewardImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/femaleward.jpg';
-import waitingImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/waiting.jpg';
-import surgeryImg from 'https://github.com/Dera-Unegbu/GOLDEN/blob/main/src/assets/theater.jpeg';
+import officeImg from './assets/docoffice.png';
+import entranceImg from './assets/reception101.png';
+import recepImg from './assets/recep.jpg';
+import gymImg from './assets/gym.jpg';
+import scanImg from './assets/scanarea.jpg';
+import malewardImg from './assets/maleward.jpeg';
+import femalewardImg from './assets/femaleward.jpg';
+import waitingImg from './assets/waiting.jpg';
+import surgeryImg from './assets/theater.jpeg';
 
 const tourLocations = [
   { 
