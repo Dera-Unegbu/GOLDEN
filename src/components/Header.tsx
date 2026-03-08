@@ -11,9 +11,10 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 -ml-2">
-            <Link to="/" className="text-xl sm:text-2xl font-bold text-gray-800 truncate max-w-[200px] sm:max-w-none">
-              Golden Hands Medical Centre
-            </Link>
+          <Link to="/" className="text-xl sm:text-2xl font-bold truncate max-w-[200px] sm:max-w-none">
+  <span className="text-blue-700">Golden Hands</span>
+  <span className="text-red-600"> Medical Centre</span>
+</Link>
           </div>
           
           {/* Desktop Menu */}

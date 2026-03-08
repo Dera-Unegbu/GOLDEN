@@ -1,4 +1,6 @@
 import React from 'react';
+import { Phone, MessageCircle } from 'lucide-react';
+
 export default function Contact() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -6,9 +8,29 @@ export default function Contact() {
       
       <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
-          <p className="text-lg mb-2">Call only @ +2348036746384</p>
-          <p className="text-lg">Call and Whatsapp @ +2348084915273</p>
+          <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
+          
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+            {/* Blue Call Button */}
+            <a 
+              href="tel:+2348036746384"
+              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md"
+            >
+              <Phone size={20} />
+              Call +2348036746384
+            </a>
+
+            {/* Green WhatsApp Button */}
+            <a 
+              href="https://wa.me/2348084915273"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-md"
+            >
+              <MessageCircle size={20} />
+              WhatsApp Us
+            </a>
+          </div>
         </div>
 
         <div className="w-full overflow-hidden rounded-lg">
