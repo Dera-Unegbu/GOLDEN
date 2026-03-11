@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Phone, MessageCircle } from 'lucide-react'; // Added this import
+import { Phone, MessageCircle } from 'lucide-react';
 import Header from './components/Header';
 import BookingForm from './components/BookingForm';
 import VirtualTour from './components/VirtualTour';
 import Services from './components/Services';
 import Contact from './components/Contact';
+import Events from './components/Events';
+import RecentEvents from './components/RecentEvents';
 import hospitalImg from './assets/goldenhands.jpeg';
 import theaterImg from './assets/theater.jpeg';
 
@@ -64,6 +66,9 @@ function Home() {
         </div>
       </div>
 
+      {/* Recent Events Section */}
+      <RecentEvents />
+
       {/* About Section */}
       <div className="relative mt-20">
         <div className="absolute inset-0">
@@ -107,6 +112,7 @@ function App() {
             <Route path="/tour" element={<VirtualTour />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/events" element={<Events />} />
           </Routes>
         </main>
       </div>
