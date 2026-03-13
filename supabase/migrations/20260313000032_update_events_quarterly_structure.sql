@@ -17,7 +17,7 @@ DELETE FROM events WHERE title LIKE 'Quarterly%' OR title = 'Annual Medical Outr
 
 INSERT INTO events (title, description, image_url, event_date, is_past) VALUES
   (
-    'Quarterly Medical Outreach: February',
+    'Quarterly Medical Outreach : November 2025',
     'Our February community outreach program brings essential healthcare services directly to underserved communities. Free consultations, health screenings, and medical supplies distribution.',
     'https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg',
     '2026-02-15 09:00:00+01',
@@ -38,7 +38,7 @@ INSERT INTO events (title, description, image_url, event_date, is_past) VALUES
     false
   ),
   (
-    'Quarterly Medical Outreach: November',
+    'Quarterly Medical Outreach : November 2026',
     'November brings our year-ending community health initiative, featuring comprehensive health assessments, wellness consultations, and holiday health awareness campaigns.',
     'https://images.pexels.com/photos/7089020/pexels-photo-7089020.jpeg',
     '2026-11-15 09:00:00+01',
