@@ -6,21 +6,21 @@ export default function RecentEvents() {
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    fetchRecentEvents();
+    fetchQuarterlyEvents();
   }, []);
 
-  async function fetchRecentEvents() {
+  async function fetchQuarterlyEvents() {
     try {
       const { data, error } = await supabase
         .from('events')
         .select('*')
-        .order('event_date', { ascending: false })
-        .limit(3);
+        .like('title', '%Quarterly%')
+        .order('event_date', { ascending: true });
 
       if (error) throw error;
       setEvents(data || []);
     } catch (error) {
-      console.error('Error fetching recent events:', error);
+      console.error('Error fetching quarterly events:', error);
     }
   }
 
@@ -37,12 +37,12 @@ export default function RecentEvents() {
           </h2>
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {events.map((event) => (
             <Link
               key={event.id}
               to="/events"
-              className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 h-80"
+              className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 h-72"
             >
               <div className="relative w-full h-full overflow-hidden">
                 <img
@@ -60,10 +60,10 @@ export default function RecentEvents() {
                   }`}>
                     {event.is_past ? 'Past Event' : 'Upcoming'}
                   </span>
-                  <h3 className="text-2xl font-bold mb-2 group-hover:text-blue-300 transition-colors">
+                  <h3 className="text-xl font-bold group-hover:text-blue-300 transition-colors">
                     {event.title}
                   </h3>
-                  <p className="text-sm text-gray-200 line-clamp-2">{event.description}</p>
+                  <p className="text-xs text-gray-200 line-clamp-2 mt-2">{event.description}</p>
                 </div>
               </div>
             </Link>
