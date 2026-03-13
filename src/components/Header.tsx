@@ -23,6 +23,7 @@ export default function Header() {
               <Link to="/" className="px-3 py-2 text-gray-700 hover:text-gray-900">Home</Link>
               <Link to="/services" className="px-3 py-2 text-gray-700 hover:text-gray-900">Services</Link>
               <Link to="/contact" className="px-3 py-2 text-gray-700 hover:text-gray-900">Contact Us</Link>
+              <Link to="/events" className="px-3 py-2 text-gray-700 hover:text-gray-900">Events</Link>
               <Link to="/tour" className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors">
                 Take A Virtual Tour
               </Link>
