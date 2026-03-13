@@ -23,6 +23,7 @@ export default function EventSection() {
       const { data: eventsData, error: eventsError } = await supabase
         .from('events')
         .select('*')
+        .order('CASE WHEN title = \'Quarterly Medical Outreach : November 2025\' THEN 0 ELSE 1 END', { ascending: true })
         .order('event_date', { ascending: false });
 
       if (eventsError) throw eventsError;
