@@ -69,47 +69,44 @@ export default function EventSection() {
       </p>
 
       <div className="space-y-12">
-  {events.map((event) => (
-    <div key={event.id} className="border-b border-gray-200 pb-12 last:border-b-0">
-      {/* 1. Added 'flex-col' for mobile, 'sm:flex-row' for larger screens */}
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-8">
-        <img
-          src={event.image_url}
-          alt={event.title}
-          /* 2. Adjusted image size to be slightly smaller on mobile to save vertical space */
-          className="w-full sm:w-32 h-48 sm:h-32 object-cover rounded-lg flex-shrink-0 shadow-md"
-        />
-        
-        <div className="flex-grow text-center sm:text-left">
-          {/* 3. Responsive text size: 'text-lg' for mobile, 'sm:text-2xl' for desktop */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 mb-2">
-            <h2 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">
-              {event.title}
-            </h2>
-            <span className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold ${
-              event.is_past
-                ? 'bg-gray-200 text-gray-800'
-                : 'bg-green-100 text-green-800'
-            }`}>
-              {event.is_past ? 'Past Event' : 'Upcoming'}
-            </span>
-          </div>
-          
-          {/* 4. Description text scaling */}
-          <p className="text-sm sm:text-base text-gray-600 mb-2 line-clamp-3 sm:line-clamp-none">
-            {event.description}
-          </p>
-          
-          <p className="text-xs sm:text-sm text-gray-500">
-            {new Date(event.event_date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </p>
-        </div>
-      </div>
-    </div>
+        {events.map((event) => (
+          <div key={event.id} className="border-b border-gray-200 pb-12 last:border-b-0">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-8">
+              <img
+                src={event.image_url}
+                alt={event.title}
+                className="w-full sm:w-32 h-48 sm:h-32 object-cover rounded-lg flex-shrink-0 shadow-md"
+              />
+
+              <div className="flex-grow text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row items-center gap-3 mb-2">
+                  <h2 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">
+                    {event.title}
+                  </h2>
+                  <span
+                    className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold ${
+                      event.is_past
+                        ? 'bg-gray-200 text-gray-800'
+                        : 'bg-green-100 text-green-800'
+                    }`}
+                  >
+                    {event.is_past ? 'Past Event' : 'Upcoming'}
+                  </span>
+                </div>
+
+                <p className="text-sm sm:text-base text-gray-600 mb-2 line-clamp-3 sm:line-clamp-none">
+                  {event.description}
+                </p>
+
+                <p className="text-xs sm:text-sm text-gray-500">
+                  {new Date(event.event_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
 
             {mediaByEvent[event.id] && mediaByEvent[event.id].length > 0 && (
               <div className="media-gallery grid gap-4 grid-cols-2 lg:grid-cols-4">
