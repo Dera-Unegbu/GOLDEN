@@ -85,6 +85,13 @@ export default function Header() {
                 Contact Us
               </Link>
               <Link
+                to="/events"
+                className="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                 Events
+              </Link>
+              <Link
                 to="/tour"
                 className="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
                 onClick={() => setMobileMenuOpen(false)}
