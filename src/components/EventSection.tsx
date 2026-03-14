@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase, Event } from '../lib/supabase';
+import { PlayIcon } from '@heroicons/react/24/solid';
 
 interface EventMedia {
   id: string;
   event_id: string;
   media_url: string;
+  thumbnail_url?: string;
   media_type: 'image' | 'video';
   display_order: number;
 }
@@ -13,10 +15,30 @@ export default function EventSection() {
   const [events, setEvents] = useState<Event[]>([]);
   const [mediaByEvent, setMediaByEvent] = useState<Record<string, EventMedia[]>>({});
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentEventId, setCurrentEventId] = useState<string | null>(null);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
 
   useEffect(() => {
     fetchEventsAndMedia();
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!modalOpen || !currentEventId) return;
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowLeft') {
+        const media = mediaByEvent[currentEventId];
+        setCurrentMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        const media = mediaByEvent[currentEventId];
+        setCurrentMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalOpen, currentEventId, mediaByEvent]);
 
   async function fetchEventsAndMedia() {
     try {
@@ -50,6 +72,52 @@ export default function EventSection() {
       setLoading(false);
     }
   }
+
+  const openModal = (eventId: string, mediaIndex: number) => {
+    setCurrentEventId(eventId);
+    setCurrentMediaIndex(mediaIndex);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setCurrentEventId(null);
+    setCurrentMediaIndex(0);
+  };
+
+  const prevMedia = () => {
+    if (!currentEventId) return;
+    const media = mediaByEvent[currentEventId];
+    setCurrentMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
+  };
+
+  const nextMedia = () => {
+    if (!currentEventId) return;
+    const media = mediaByEvent[currentEventId];
+    setCurrentMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+  };
+
+  const renderCurrentMedia = () => {
+    if (!currentEventId) return null;
+    const media = mediaByEvent[currentEventId][currentMediaIndex];
+    if (media.media_type === 'image') {
+      return (
+        <img
+          src={media.media_url}
+          alt="Event media"
+          className="max-w-full max-h-full object-contain"
+        />
+      );
+    } else {
+      return (
+        <video
+          src={media.media_url}
+          controls
+          className="max-w-full max-h-full object-contain"
+        />
+      );
+    }
+  };
 
   if (loading) {
     return (
@@ -110,10 +178,11 @@ export default function EventSection() {
 
             {mediaByEvent[event.id] && mediaByEvent[event.id].length > 0 && (
               <div className="media-gallery grid gap-4 grid-cols-2 lg:grid-cols-4">
-                {mediaByEvent[event.id].map((media) => (
+                {mediaByEvent[event.id].map((media, index) => (
                   <div
                     key={media.id}
-                    className="relative overflow-hidden rounded-lg bg-gray-200 aspect-square group"
+                    className="relative overflow-hidden rounded-lg bg-gray-200 aspect-square group cursor-pointer"
+                    onClick={() => openModal(event.id, index)}
                   >
                     {media.media_type === 'image' ? (
                       <img
@@ -123,14 +192,14 @@ export default function EventSection() {
                       />
                     ) : (
                       <div className="relative w-full h-full bg-black flex items-center justify-center">
-                        <video
-                          src={media.media_url}
+                        <img
+                          src={media.thumbnail_url || media.media_url}
+                          alt="Video thumbnail"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          controls
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
                           <div className="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center">
-                            <div className="w-0 h-0 border-l-6 border-l-transparent border-r-6 border-r-transparent border-t-6 border-t-gray-900 ml-1"></div>
+                            <PlayIcon className="w-6 h-6 text-gray-900 ml-1" />
                           </div>
                         </div>
                       </div>
@@ -152,6 +221,34 @@ export default function EventSection() {
       {events.length === 0 && (
         <div className="text-center py-12">
           <p className="text-xl text-gray-600">No events found.</p>
+        </div>
+      )}
+
+      {modalOpen && currentEventId && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={closeModal}>
+          <div className="relative max-w-4xl max-h-full p-4" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-white text-3xl hover:text-gray-300 z-10"
+            >
+              ×
+            </button>
+            <button
+              onClick={prevMedia}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10"
+            >
+              ‹
+            </button>
+            <button
+              onClick={nextMedia}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10"
+            >
+              ›
+            </button>
+            <div className="flex justify-center items-center">
+              {renderCurrentMedia()}
+            </div>
+          </div>
         </div>
       )}
     </div>
