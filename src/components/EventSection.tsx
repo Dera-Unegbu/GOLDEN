@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, Event } from '../lib/supabase';
+import { PlayIcon } from '@heroicons/react/24/solid';
 
 interface EventMedia {
   id: string;
@@ -198,7 +199,7 @@ export default function EventSection() {
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
                           <div className="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center">
-                            <div className="w-0 h-0 border-l-6 border-l-transparent border-r-6 border-r-transparent border-t-6 border-t-gray-900 ml-1"></div>
+                            <PlayIcon className="w-6 h-6 text-gray-900 ml-1" />
                           </div>
                         </div>
                       </div>
