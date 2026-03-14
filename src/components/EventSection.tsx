@@ -5,6 +5,7 @@ interface EventMedia {
   id: string;
   event_id: string;
   media_url: string;
+  thumbnail_url?: string;
   media_type: 'image' | 'video';
   display_order: number;
 }
@@ -190,10 +191,10 @@ export default function EventSection() {
                       />
                     ) : (
                       <div className="relative w-full h-full bg-black flex items-center justify-center">
-                        <video
-                          src={media.media_url}
+                        <img
+                          src={media.thumbnail_url || media.media_url}
+                          alt="Video thumbnail"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          controls
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
                           <div className="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center">
