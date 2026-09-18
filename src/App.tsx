@@ -8,7 +8,7 @@ import Services from './components/Services';
 import Contact from './components/Contact';
 import Events from './components/Events';
 import RecentEvents from './components/RecentEvents';
-import hospitalImg from './assets/goldenbu.png';
+import hospitalImg from './assets/goldenbu.webp';
 import theaterImg from './assets/theater.jpeg';
 
 function Home() {
